@@ -17,10 +17,9 @@ function init(config) {
     emitter = new EventEmitter();
     console.log('initialising twitter comms');
     console.log(config);
-    client.stream('user', {}, function(stream) {
+    client.stream('user', {with:'user'}, function(stream) {
         stream.on('data', function(data) {
-            console.log(data);
-            if(isTweet(data)) {
+            if(isValidTweet(data)) {
                 emitter.emit('question', getQuestion(data));
             }
         });
@@ -34,16 +33,22 @@ function init(config) {
 function getQuestion(tweet) {
     return {
         text: tweet.text,
-        asker: tweet.user.screen_name
+        asker: tweet.user.screen_name,
+        statusId: tweet.id_str
     };
 }
 
 function respond(response) {
     console.log(response);
+    client.post('statuses/update', {in_reply_to_status_id: response.question.statusId, status: response.text},  function(error, tweet, resp){
+        if(error) {
+            throw error;
+        }
+    });
 }
 
-function isTweet(data) {
-    return data.created_at && data.user;
+function isValidTweet(data) {
+    return data.created_at && data.user && data.user.id_str !== '4405045761';
 }
 
 module.exports = {

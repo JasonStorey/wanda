@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 let EventEmitter = require('events');
 let Twitter = require('Twitter');

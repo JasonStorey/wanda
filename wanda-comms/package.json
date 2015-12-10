@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "twitter": "^1.2.5"
+    "twitter": "^1.2.5",
+    "request": "^2.67.0"
   }
 }

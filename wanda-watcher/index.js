@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 let express = require('express');
 let app = express();
@@ -16,5 +16,4 @@ function getAnswer() {
 
 app.listen(3000);
 
-console.log('wanda watcher initialised');
-
+console.log('wanda watcher listening on 3000');

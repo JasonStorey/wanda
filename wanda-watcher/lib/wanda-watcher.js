@@ -8,25 +8,32 @@ function init(config) {
 }
 
 function startCapturing() {
-    grabImage(() => setTimeout(startCapturing, 1000));
+    grabImage(() => setTimeout(startCapturing, 50));
 }
 
 function grabImage(onSuccess) {
-    exec('imagesnap -w 1 ./images/capture.png', (error, stdout, stderr) => {
+    exec('imagesnap -w 0.8 ./public/current.jpg', (error, stdout, stderr) => {
         console.log(error, stdout, stderr);
-        if(error !== null) {
-            return;
-        }
+        if(error !== null) { return; }
         onSuccess();
     });
 }
 
-function getState() {
-    return {
-        positionId: 0,
-        image: 'wanda pic',
-        timestamp: Date.now()
-    };
+function getState(done) {
+    let ts = Date.now(),
+        wandaPicName = 'wanda_' + ts + '.jpg',
+        wandaState = {
+            positionId: 0,
+            image: '/capture/' + wandaPicName,
+            timestamp: ts
+        };
+
+    exec('cp ./public/current.jpg ./public/' + wandaPicName, (error, stdout, stderr) => {
+        if(error !== null) {
+            wandaState.image = '/capture/wanda.jpg';
+        }
+        done(wandaState);
+    });
 }
 
 module.exports = {

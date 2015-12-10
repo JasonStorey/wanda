@@ -6,12 +6,14 @@ let wandaWatcher = require('./lib/wanda-watcher');
 
 wandaWatcher.init('wanda watcher config');
 
+app.use('/capture', express.static('public'));
+
 app.get('/question', (req, res) => {
-    res.json(getAnswer());
+    getAnswer(answer => res.json(answer));
 });
 
-function getAnswer() {
-    return wandaWatcher.getState();
+function getAnswer(done) {
+    wandaWatcher.getState(done);
 }
 
 app.listen(3000);

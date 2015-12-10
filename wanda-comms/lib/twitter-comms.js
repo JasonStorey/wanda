@@ -17,10 +17,12 @@ function init(config) {
     emitter = new EventEmitter();
     console.log('initialising twitter comms');
     console.log(config);
-    client.stream('user', {with:'user'}, function(stream) {
+    client.stream('user', {}, function(stream) {
         stream.on('data', function(data) {
             if(isValidTweet(data)) {
                 emitter.emit('question', getQuestion(data));
+            } else {
+                console.log(data);
             }
         });
 

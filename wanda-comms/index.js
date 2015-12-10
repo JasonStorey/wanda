@@ -4,6 +4,7 @@ const WANDA_WATCHER_URL = 'http://localhost:3000/question';
 
 let request = require('request');
 let twitterComms = require('./lib/twitter-comms');
+let messages = require('./lib/messages');
 
 twitterComms.init('A dummy Twitter config');
 twitterComms.getEmitter().on('question', question => {
@@ -14,7 +15,7 @@ twitterComms.getEmitter().on('question', question => {
 function getResponse(question, done) {
     request({url: WANDA_WATCHER_URL, json: true}, (error, response, body) => {
         done({
-            text: 'Position : ' + body.positionId + ' @' + question.asker,
+            text: messages.getMessage(body.positionId, '@' + question.asker),
             image: body.image,
             question: question
         });

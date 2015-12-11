@@ -44,19 +44,20 @@ function respond(answer) {
     console.log(answer);
 
     client.post('media/upload', {media: answer.imageBuffer}, function(error, media, response) {
-        if (error) {
-            console.log(error);
-        }
-
         let status = {
             status: answer.text,
-            in_reply_to_status_id: answer.question.statusId,
-            media_ids: media.media_id_string
+            in_reply_to_status_id: answer.question.statusId
         };
+
+        if (error) {
+            console.log(error, error.message);
+        } else if(media) {
+            status.media_ids = media.media_id_string;
+        }
 
         client.post('statuses/update', status,  function(error, tweet, resp){
             if(error) {
-                console.log(error);
+                console.log(error, error.message);
             }
         });
     });

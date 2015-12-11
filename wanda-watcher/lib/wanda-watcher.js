@@ -4,7 +4,7 @@ const WANDA_WATCHER_STILLS = 'http://localhost:3000/capture/';
 
 let exec = require('child_process').exec;
 let imageAnalysis = require('./image-analysis');
-let refreshRate = 100;
+let refreshRate = 500;
 
 function init(config) {
     console.log(config);
@@ -27,7 +27,7 @@ function grabImage(onSuccess) {
             return;
         }
 
-        refreshRate = 100;
+        refreshRate = 500;
         //console.log('copying from stream.jpg to current.jpg');
         exec('cp ./public/stream.jpg ./public/current.jpg', (error, stdout, stderr) => {
             if(error !== null) { console.log(error); return; }

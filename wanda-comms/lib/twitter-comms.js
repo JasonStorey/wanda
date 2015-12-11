@@ -45,7 +45,7 @@ function respond(answer) {
 
     client.post('media/upload', {media: answer.imageBuffer}, function(error, media, response) {
         if (error) {
-            throw(error);
+            console.log(error);
         }
 
         let status = {
@@ -56,7 +56,7 @@ function respond(answer) {
 
         client.post('statuses/update', status,  function(error, tweet, resp){
             if(error) {
-                throw error;
+                console.log(error);
             }
         });
     });

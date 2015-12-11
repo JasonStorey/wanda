@@ -1,7 +1,7 @@
 'use strict';
 
 let EventEmitter = require('events');
-let Twitter = require('Twitter');
+let Twitter = require('twitter');
 let CREDENTIALS = require('../credentials.json');
 
 let client = new Twitter({

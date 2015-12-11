@@ -45,8 +45,8 @@ function calculateImageDelta(oldImagePixels, newImagePixels) {
 }
 
 function calibrate() {
-    getPixels('./public/calibrate.jpg', (err, pixels) => {
-        if(err) { console.log(error); return; }
+    getPixels('./public/calibrate.jpg', (error, pixels) => {
+        if(error) { console.log(error); return; }
 
         calibratedPixels = pixels;
     });

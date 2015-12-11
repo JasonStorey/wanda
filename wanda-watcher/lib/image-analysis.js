@@ -10,6 +10,7 @@ function init() {
 
 function findWanda(imagePath, done) {
     let fishPosish = -1;
+    console.log('finding wanda in : ' + imagePath);
 
     getPixels(imagePath, function(error, pixels) {
         if(error) { console.log(error); return; }
@@ -52,7 +53,7 @@ function calculateImageDelta(oldImagePixels, newImagePixels) {
 function calibrate() {
     getPixels('./public/calibrate.jpg', (error, pixels) => {
         if(error) { console.log(error); return; }
-
+        console.log('calibrated');
         calibratedPixels = pixels;
     });
 }

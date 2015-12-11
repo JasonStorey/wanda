@@ -40,12 +40,25 @@ function getQuestion(tweet) {
     };
 }
 
-function respond(response) {
-    console.log(response);
-    client.post('statuses/update', {in_reply_to_status_id: response.question.statusId, status: response.text},  function(error, tweet, resp){
-        if(error) {
-            throw error;
+function respond(answer) {
+    console.log(answer);
+
+    client.post('media/upload', {media: answer.imageBuffer}, function(error, media, response) {
+        if (error) {
+            throw(error);
         }
+
+        let status = {
+            status: answer.text,
+            in_reply_to_status_id: answer.question.statusId,
+            media_ids: media.media_id_string
+        };
+
+        client.post('statuses/update', status,  function(error, tweet, resp){
+            if(error) {
+                throw error;
+            }
+        });
     });
 }
 
@@ -58,4 +71,3 @@ module.exports = {
     getEmitter: () => emitter,
     respond: respond
 };
-

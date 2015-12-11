@@ -14,10 +14,14 @@ twitterComms.getEmitter().on('question', question => {
 
 function getResponse(question, done) {
     request({url: WANDA_WATCHER_URL, json: true}, (error, response, body) => {
-        done({
-            text: messages.getMessage(body.positionId, '@' + question.asker),
-            image: body.image,
-            question: question
+        request.get({url: body.image, encoding: null}, (error, response, imageBody) => {
+            if (!error && response.statusCode == 200) {
+                done({
+                    text: messages.getMessage(body.positionId, '@' + question.asker),
+                    imageBuffer: imageBody,
+                    question: question
+                });
+            }
         });
     });
 }

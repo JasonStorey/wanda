@@ -13,14 +13,23 @@ twitterComms.getEmitter().on('question', question => {
 });
 
 function getResponse(question, done) {
+    let answer = {
+        text: messages.getMessage(-1, '@' + question.asker),
+        imageBuffer: 'default image',
+        question: question
+    };
+
     request({url: WANDA_WATCHER_URL, json: true}, (error, response, body) => {
+        if(error) {
+            console.log(error, error.message);
+            done(answer);
+            return;
+        }
         request.get({url: body.image, encoding: null}, (error, response, imageBody) => {
             if (!error && response.statusCode == 200) {
-                done({
-                    text: messages.getMessage(body.positionId, '@' + question.asker),
-                    imageBuffer: imageBody,
-                    question: question
-                });
+                answer.text = messages.getMessage(body.positionId, '@' + question.asker);
+                answer.imageBuffer = imageBody;
+                done(answer);
             }
         });
     });

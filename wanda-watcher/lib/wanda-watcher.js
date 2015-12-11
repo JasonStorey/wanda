@@ -1,5 +1,7 @@
 'use strict';
 
+const WANDA_WATCHER_STILLS = 'http://localhost:3000/capture/';
+
 let exec = require('child_process').exec;
 let imageAnalysis = require('./image-analysis');
 
@@ -25,7 +27,7 @@ function getState(done) {
         wandaPicName = 'wanda_' + ts + '.jpg',
         wandaState = {
             positionId: -1,
-            image: '/capture/wanda.jpg',
+            image: WANDA_WATCHER_STILLS + 'wanda.jpg',
             timestamp: ts
         };
 
@@ -37,7 +39,7 @@ function getState(done) {
 
         imageAnalysis.findWanda('./public/' + wandaPicName, position => {
             wandaState.positionId = position;
-            wandaState.image = '/capture/' + wandaPicName;
+            wandaState.image = WANDA_WATCHER_STILLS + wandaPicName;
             done(wandaState);
         });
     });

@@ -11,10 +11,7 @@ function findWanda(imagePath, done) {
     let fishPosish = -1;
 
     getPixels(imagePath, function(err, pixels) {
-        if(err) {
-            console.log('Bad image path');
-            return
-        }
+        if(err) { console.log(error); return; }
 
         let leftPixels = getPixelsFromQuadrant(0, pixels),
             rightPixels = getPixelsFromQuadrant(1, pixels);
@@ -36,7 +33,7 @@ function calculateImageDelta(oldImagePixels, newImagePixels) {
     for(var i = 0; i < red.shape[0]; ++i) {
         if(i % 5 === 0) {
             for(var j = 0; j < red.shape[1]; ++j) {
-                if (j % 50 === 0) {
+                if (j % 5 === 0) {
                     let diff = Math.abs(oldRed.get(i, j) - red.get(i, j));
                     delta += diff > 5 ? diff : 0;
                 }
@@ -49,10 +46,7 @@ function calculateImageDelta(oldImagePixels, newImagePixels) {
 
 function calibrate() {
     getPixels('./public/calibrate.jpg', (err, pixels) => {
-        if (err) {
-            console.log('Bad image path');
-            return;
-        }
+        if(err) { console.log(error); return; }
 
         calibratedPixels = pixels;
     });

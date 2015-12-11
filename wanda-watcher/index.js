@@ -9,7 +9,10 @@ wandaWatcher.init('wanda watcher config');
 app.use('/capture', express.static('public'));
 
 app.get('/question', (req, res) => {
-    getAnswer(answer => res.json(answer));
+    getAnswer(answer => {
+        console.log(answer);
+        res.json(answer);
+    });
 });
 
 function getAnswer(done) {

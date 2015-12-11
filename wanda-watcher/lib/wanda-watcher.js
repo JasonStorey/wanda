@@ -12,13 +12,17 @@ function init(config) {
 }
 
 function startCapturing() {
-    grabImage(() => setTimeout(startCapturing, 50));
+    grabImage(() => setTimeout(startCapturing, 100));
 }
 
 function grabImage(onSuccess) {
-    exec('imagesnap -w 0.8 ./public/current.jpg', (error, stdout, stderr) => {
-        if(error !== null) { return; }
-        onSuccess();
+    //imagesnap -w 0.8 ./public/current.jpg
+    exec('fswebcam -r 640x360 --no-banner ./public/stream.jpg', (error, stdout, stderr) => {
+        if(error !== null) { console.log(error); return; }
+        exec('cp ./public/stream.jpg ./public/current.jpg', (error, stdout, stderr) => {
+            if(error !== null) { console.log(error); return; }
+            onSuccess();
+        });
     });
 }
 
@@ -33,6 +37,7 @@ function getState(done) {
 
     exec('cp ./public/current.jpg ./public/' + wandaPicName, (error, stdout, stderr) => {
         if(error !== null) {
+            console.log(error);
             done(wandaState);
             return;
         }

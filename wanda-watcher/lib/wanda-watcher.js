@@ -4,6 +4,7 @@ const WANDA_WATCHER_STILLS = 'http://localhost:3000/capture/';
 
 let exec = require('child_process').exec;
 let imageAnalysis = require('./image-analysis');
+let refreshRate = 100;
 
 function init(config) {
     console.log(config);
@@ -12,7 +13,7 @@ function init(config) {
 }
 
 function startCapturing() {
-    grabImage(() => setTimeout(startCapturing, 1000));
+    grabImage(() => setTimeout(startCapturing, refreshRate));
 }
 
 function grabImage(onSuccess) {
@@ -21,9 +22,12 @@ function grabImage(onSuccess) {
         if(error !== null || stderr.length > 0) {
             console.log('fswebcam failed for some reason');
             console.log(error, stderr);
+            refreshRate = 5000;
             onSuccess();
             return;
         }
+
+        refreshRate = 100;
         //console.log('copying from stream.jpg to current.jpg');
         exec('cp ./public/stream.jpg ./public/current.jpg', (error, stdout, stderr) => {
             if(error !== null) { console.log(error); return; }

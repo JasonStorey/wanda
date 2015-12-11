@@ -1,9 +1,11 @@
 'use strict';
 
 let exec = require('child_process').exec;
+let imageAnalysis = require('./image-analysis');
 
 function init(config) {
     console.log(config);
+    imageAnalysis.init();
     startCapturing();
 }
 
@@ -13,7 +15,6 @@ function startCapturing() {
 
 function grabImage(onSuccess) {
     exec('imagesnap -w 0.8 ./public/current.jpg', (error, stdout, stderr) => {
-        console.log(error, stdout, stderr);
         if(error !== null) { return; }
         onSuccess();
     });
@@ -23,16 +24,22 @@ function getState(done) {
     let ts = Date.now(),
         wandaPicName = 'wanda_' + ts + '.jpg',
         wandaState = {
-            positionId: 0,
-            image: '/capture/' + wandaPicName,
+            positionId: -1,
+            image: '/capture/wanda.jpg',
             timestamp: ts
         };
 
     exec('cp ./public/current.jpg ./public/' + wandaPicName, (error, stdout, stderr) => {
         if(error !== null) {
-            wandaState.image = '/capture/wanda.jpg';
+            done(wandaState);
+            return;
         }
-        done(wandaState);
+
+        imageAnalysis.findWanda('./public/' + wandaPicName, position => {
+            wandaState.positionId = position;
+            wandaState.image = '/capture/' + wandaPicName;
+            done(wandaState);
+        });
     });
 }
 

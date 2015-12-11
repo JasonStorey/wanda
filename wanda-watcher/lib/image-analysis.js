@@ -10,8 +10,8 @@ function init() {
 function findWanda(imagePath, done) {
     let fishPosish = -1;
 
-    getPixels(imagePath, function(err, pixels) {
-        if(err) { console.log(error); return; }
+    getPixels(imagePath, function(error, pixels) {
+        if(error) { console.log(error); return; }
 
         let leftPixels = getPixelsFromQuadrant(0, pixels),
             rightPixels = getPixelsFromQuadrant(1, pixels);

@@ -18,7 +18,7 @@ function startCapturing() {
 
 function grabImage(onSuccess) {
     //imagesnap -w 0.8 ./public/current.jpg
-    exec('fswebcam -r 640x360 --no-banner ./public/stream.jpg', (error, stdout, stderr) => {
+    exec('fswebcam -D 1 -r 640x360 --no-banner ./public/stream.jpg', (error, stdout, stderr) => {
         if(error !== null) {
             console.log('fswebcam failed for some reason');
             console.log(error, stderr);
